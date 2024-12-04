@@ -29,6 +29,9 @@ def categorize_user(df, page_value_threshold, duration_threshold):
         page_value_threshold (float): Threshold for high/zero page values.
         duration_threshold (float): Threshold for high/zero product-related duration.
         
+    Usage:   
+    categorize_user(df, page_value_threshold=0, duration_threshold=0)
+
     Returns: 
         pd.Series: A series of categories corresponding to each user'''
 
