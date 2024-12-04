@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "/opt/miniconda3/envs/jupyterlab-env/bin/python",
+    "python.analysis.extraPaths": [
+        "./src" // Adds the 'src' directory to the python module search path
+    ],
+    "python.envFile": "${workspaceFolder}/.env" //Loads the environment variables from the .env file including PYTHONPATH
+}
