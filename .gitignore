@@ -1,0 +1,21 @@
+# Ignore virtual environment
+.env
+venv/
+.vscode/
+
+# Ignore Compiled Python files
+*.pyc
+*.pyo
+
+# Ignore logs
+*.log
+
+#Ignore Jupyter notebook checkpoints
+*.ipynb_checkpoints/
+
+#Ignore python cache files
+__pycache__/
+
+#Ignore macos system files
+.DS_Store
+
