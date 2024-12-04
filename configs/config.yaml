@@ -1,8 +1,9 @@
 # config.yaml
 
 data:
-    raw_data_path: "online-shopping-ml/data/raw/online_shoppers_intentions.csv"
-    interim_data_path: "online-shopping-ml/data/interim/"
+    raw_data_path: "data/raw/online_shoppers_intention.csv"
+    interim_data_path: "data/interim/"
+    processed_data_path: "data/processed"
 
 paths:
-    models: "online-shopping-ml/artifacts/models/"
+    models: "artifacts/models/"
