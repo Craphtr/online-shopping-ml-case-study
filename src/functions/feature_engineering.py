@@ -2,7 +2,9 @@
 import numpy as np
 import pandas as pd
 
-def feature_engineering(cleaned_prepd_shopping):
+def feature_engineering(cleaned_prepd_shopping,
+                        compute_engagement=True,
+                        ):
     """
     This function performs feature engineering on the cleaned and preprocessed shopping data
     
@@ -17,7 +19,13 @@ def feature_engineering(cleaned_prepd_shopping):
     """
     prepd_and_engineered_shopping = cleaned_prepd_shopping.copy()
 
-    
-    #1. Add New Enginered Features   
+
+    # Add New Engineered Features   
+
+    #1. User Engagement Features
+    #Session_duration captures the total time spent during a session
     prepd_and_engineered_shopping['session_duration'] = prepd_and_engineered_shopping[['administrative_duration','informational_duration','product_related_duration']].sum(axis=1)
-    prepd_and_engineered_shopping['engagement_intentsity'] = (prepd_and_engineered_shopping['page_values']/prepd_and_engineered_shopping['session_duration']).fillna(0)
+
+    #Engagement_Intensity computes the ratio of page_values/session_duration to reflect how valuable the session was relative to the time spent
+    if compute_engagement:
+        prepd_and_engineered_shopping['engagement_intentsity'] = (prepd_and_engineered_shopping['page_values']/prepd_and_engineered_shopping['session_duration']).fillna(0)
