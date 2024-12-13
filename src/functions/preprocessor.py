@@ -6,7 +6,6 @@ from sklearn.preprocessing import MinMaxScaler
 data_folder = '../data/'
 
 #Read the cleaned data and create a copy of it so as not to modify it inplace
-#cleaned_shopping = pd.read_pickle('../data/cleaned_shopping_data.pkl')
 def preprocessor(cleaned_shopping,
                 numeric_to_cat=True,
                 duration_to_mins = True,
@@ -28,7 +27,7 @@ def preprocessor(cleaned_shopping,
     
     #1. Convert Weekend to Numeric
     preprocessed_shopping["weekend"] = preprocessed_shopping["weekend"].astype("int64")
-
+    
     # Convert Month to categorical and arranged in order
     #preprocessed_shopping["month"] = preprocessed_shopping["month"].str.strip().str.title()
     if not pd.api.types.is_categorical_dtype(preprocessed_shopping["month"]):
@@ -98,14 +97,15 @@ def preprocessor(cleaned_shopping,
         scaled_data = scaler.fit_transform(preprocessed_shopping[columns_to_scale])
         preprocessed_shopping[columns_to_scale]=pd.DataFrame(scaled_data,columns=columns_to_scale)
     
+
     cleaned_and_prepd_shopping = preprocessed_shopping.sort_values('month')
 
-     #9. Convert categorical variables to dummy variables and onehot encode
+    #9. Convert categorical variables to dummy variables and onehot encode
     if encoder:
         cleaned_and_prepd_shopping = pd.get_dummies(preprocessed_shopping, drop_first=True)
-    
         
-    #9. #Filtering columns for analysis if selected
+        
+    #1. #Filtering columns for analysis if selected
     if column_selection is not None:
         cleaned_and_prepd_shopping = cleaned_and_prepd_shopping[column_selection]
         cleaned_and_prepd_shopping = cleaned_and_prepd_shopping.reset_index(drop=True)
