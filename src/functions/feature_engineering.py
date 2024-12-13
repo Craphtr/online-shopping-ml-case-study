@@ -38,10 +38,19 @@ def feature_engineering(cleaned_prepd_shopping,
     #2.2. Product Explorer captures value to indicate purchase intent
     prepd_and_engineered_shopping['product_explorer'] = prepd_and_engineered_shopping['product_related_duration']/prepd_and_engineered_shopping['session_duration'].replace([np.inf,-np.inf], 1e6).fillna(0)
 
-    #2.3. Interaction Strength captures fraction of time spent between exporing and product interest
-    
+    #2.3. Interaction Strength captures fraction of time spent between exploring and product interest
+    prepd_and_engineered_shopping['interaction_strength'] = prepd_and_engineered_shopping['informational_duration'] * prepd_and_engineered_shopping['product_related_duration']
 
+    #2.4. Interaction Depth Are users going to more of product pages or spending more time learning 
+    prepd_and_engineered_shopping['interaction_depth'] = prepd_and_engineered_shopping['product_related'] / prepd_and_engineered_shopping['informational']
 
+    #2.5. Adjusted Bounce Rate weights bounce rate with session duration for a more realistic interpretation
+    prepd_and_engineered_shopping['adjusted_bounce_rate'] = prepd_and_engineered_shopping['bounce_rates'] * prepd_and_engineered_shopping['session_duration']
+
+    #2.6. Combined Dropoff Rate provides a more holistic view of how likely a session is to end without meaningful engagement
+    prepd_and_engineered_shopping['combined_dropoff'] = prepd_and_engineered_shopping['bounce_rates'] * prepd_and_engineered_shopping['exit_rates']
+
+    #2.7. 
 
 
 
@@ -54,6 +63,4 @@ def compute_engagement(row):
             return 0 #Assign 0 for a likely bounce
     else: return row['page_values']/row['session_duration']
 
-#Compute Info Explorer
-def compute_info_explorer(row):
-    if row['informational_duration']/row['session_duration'] == np.inf()
+
