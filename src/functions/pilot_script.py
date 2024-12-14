@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..','src')))
@@ -8,6 +6,7 @@ from functions.load_raw_data import load_raw_data
 from functions.save_data import save_data
 from functions.cleaner import cleaner
 from functions.preprocessor import preprocessor
+from functions.feature_engineering import feature_engineering
 
 
 #load in the original data
@@ -50,6 +49,13 @@ print("First instance of Cleaning & Preprocessing complete and data saved with n
 #Save the cleaned & preprocessed raw data with no encoding
 save_data(clean_prepd_shopping, 'cleaned_preprocessed_data', 'cleaned_and_preprocessed_shopping_data.pkl')
 
+print('Commenced Feature Engineering')
+prepd_engineered_shopping = feature_engineering(clean_prepd_shopping)
+print('Number of null values after feature engineering of prepd data is', prepd_engineered_shopping.isnull().sum())
+print('Feature Engineering Completed')
+
+#Save the cleaned, preprocessed and feature engineered data with no encoding
+save_data(prepd_engineered_shopping, 'preprocessed_feature_engineered_data', 'cleaned_preprocessed_feature_engineered_shopping_data.pkl')
 
 
 #----
@@ -57,15 +63,15 @@ save_data(clean_prepd_shopping, 'cleaned_preprocessed_data', 'cleaned_and_prepro
 print("Splitting cleaned and preprocessed data to Train, Test and Validation sets")
 
 #Define the Shopping train set which is 60% of the cleaned and prepd data
-shopping_train_noencoding = clean_prepd_shopping.sample(frac=0.6, random_state=3789)
+shopping_train_noencoding = prepd_engineered_shopping.sample(frac=0.6, random_state=3789)
 print('Number of null values in training data with noencoding is',shopping_train_noencoding.isnull().sum())    
 
 #Define the validation set which is 20% of sets remaining 
-shopping_val_noencoding = clean_prepd_shopping.loc[~clean_prepd_shopping.index.isin(shopping_train_noencoding.index)].sample(frac=0.5, random_state=23789)
+shopping_val_noencoding = prepd_engineered_shopping.loc[~prepd_engineered_shopping.index.isin(shopping_train_noencoding.index)].sample(frac=0.5, random_state=23789)
 print('Number of null values in validation data with noencoding is',shopping_train_noencoding.isnull().sum())    
                 
 #Define the test set which is the remaining 20%
-shopping_test_noencoding = clean_prepd_shopping.loc[~clean_prepd_shopping.index.isin(shopping_train_noencoding.index) & ~clean_prepd_shopping.index.isin(shopping_val_noencoding.index)]
+shopping_test_noencoding = prepd_engineered_shopping.loc[~prepd_engineered_shopping.index.isin(shopping_train_noencoding.index) & ~prepd_engineered_shopping.index.isin(shopping_val_noencoding.index)]
 print('Number of null values in test data with noencoding is',shopping_train_noencoding.isnull().sum())    
 
 #save to raw splits file
