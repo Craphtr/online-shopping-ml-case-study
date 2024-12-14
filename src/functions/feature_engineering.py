@@ -2,9 +2,8 @@
 import numpy as np
 import pandas as pd
 
-def feature_engineering(cleaned_prepd_shopping,
-                        apply_compute_engagement=True,
-                        ):
+def feature_engineering(cleaned_prepd_shopping):
+                        
     """
     This function performs feature engineering on the cleaned and preprocessed shopping data
     
@@ -26,14 +25,13 @@ def feature_engineering(cleaned_prepd_shopping,
     #1.1. Session_duration captures the total time spent during a session
     prepd_and_engineered_shopping['session_duration'] = prepd_and_engineered_shopping[['administrative_duration','informational_duration','product_related_duration']].sum(axis=1)
 
-    #1.2. Engagement_Intensity computes the ratio of page_values/session_duration to reflect how valuable the session was relative to the time spent
-    if apply_compute_engagement:
-        prepd_and_engineered_shopping['engagement_intentsity'] = prepd_and_engineered_shopping.apply(compute_engagement,axis=1)
-        print("Number of Null values in Engagement Intensity", prepd_and_engineered_shopping['engagement_intensity'].isnull().sum())
+    #1.2. Engagement_Intensity computed tp predict user's intention as interaction between page_values, product_related_duration and informational_duration
+    prepd_and_engineered_shopping['engagement_intentsity'] = prepd_and_engineered_shopping['product_related_duration']*prepd_and_engineered_shopping['page_values']*prepd_and_engineered_shopping['informational_duration']
+    print("Number of Null values in Engagement Intensity", prepd_and_engineered_shopping['engagement_intensity'].isnull().sum())
 
 #2. Behavioural Indicators
     #2.1. Info_Explorer captures time spent exploring info related pages during the session duration
-    prepd_and_engineered_shopping['info_explorer'] = prepd_and_engineered_shopping['informational_duration']/prepd_and_engineered_shopping['session_duration'].replace([np.inf,-np.inf],1e4).fillna(0)
+    prepd_and_engineered_shopping['info_explorer'] = prepd_and_engineered_shopping['informational_duration']/prepd_and_engineered_shopping['session_duration'].replace([np.inf,-np.inf],1e6).fillna(0)
 
     #2.2. Product Explorer captures value to indicate purchase intent
     prepd_and_engineered_shopping['product_explorer'] = prepd_and_engineered_shopping['product_related_duration']/prepd_and_engineered_shopping['session_duration'].replace([np.inf,-np.inf], 1e6).fillna(0)
@@ -50,17 +48,13 @@ def feature_engineering(cleaned_prepd_shopping,
     #2.6. Combined Dropoff Rate provides a more holistic view of how likely a session is to end without meaningful engagement
     prepd_and_engineered_shopping['combined_dropoff'] = prepd_and_engineered_shopping['bounce_rates'] * prepd_and_engineered_shopping['exit_rates']
 
-    #2.7. 
+#3. Traffic Source Impact
+    #3.1 Source Value evaluates how traffic source impacts session value
+    prepd_and_engineered_shopping['source_value'] = prepd_and_engineered_shopping['traffic_type'] * prepd_and_engineered_shopping['page_values']
+
+    #3.2. Source Duration computes engagement differences by traffic type
+    prepd_and_engineered_shopping['source_duration'] = prepd_and_engineered_shopping['traffic_type'] * prepd_and_engineered_shopping['session_duration']
 
 
-
-#Compute Engagement
-def compute_engagement(row):
-    if row['session_duration'] == 0:
-        if row['purchase'] == 1:
-            return 1e6 #Assign a large value for decisive engagement
-        else:
-            return 0 #Assign 0 for a likely bounce
-    else: return row['page_values']/row['session_duration']
 
 
