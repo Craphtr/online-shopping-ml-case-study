@@ -88,7 +88,7 @@ def preprocessor(cleaned_shopping,
         
     #7. Log Transform of Predictors
     if log_xform:
-        preprocessed_shopping[["administrative","administrative_duration", "informational","informational_duration","product_related","product_related_duration"]] = np.log(preprocessed_shopping[["administrative","administrative_duration", "informational","informational_duration","product_related","product_related_duration"]] + 1)
+        preprocessed_shopping[["administrative","administrative_duration", "informational","informational_duration","product_related","product_related_duration","page_values"]] = np.log(preprocessed_shopping[["administrative","administrative_duration", "informational","informational_duration","product_related","product_related_duration","page_values"]] + 1)
      
     #8. Standardize Predictors
     if scaler:
