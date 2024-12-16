@@ -37,7 +37,7 @@ def categorize_user(df, page_value_threshold, duration_threshold):
 
     def assign_category(row):
 
-        if row['page_values'] > 0 and row['product_related_duration'] > duration_threshold:
+        if row['page_values'] == 0 and row['product_related_duration'] > duration_threshold:
             return 'HEMP' if row['purchase'] == 1 else 'HENP'
         elif row['page_values'] == 0 and row['product_related_duration'] > duration_threshold:
             return 'MEMP' if row['purchase'] == 1 else 'BENP'
