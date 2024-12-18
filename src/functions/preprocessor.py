@@ -70,10 +70,6 @@ def preprocessor(cleaned_shopping,
     else:
         preprocessed_shopping["traffic_type"] = preprocessed_shopping["traffic_type"].apply(lambda x: x if preprocessed_shopping["traffic_type"].value_counts()[x] >= 50 else "other")
 
-    ##Handle Missing and unexpected values in month before mapping
-    if preprocessed_shopping['month'].isnull().sum()>0:
-        print('Warning: Missing or unexpected values in month before mapping')
-        print(preprocessed_shopping['month'].unique())
 
      #6. Convert month variable to numeric
     if month_to_numeric : 
@@ -82,9 +78,9 @@ def preprocessor(cleaned_shopping,
             month_mapping = {"Feb": 2, "Mar": 3, "May": 5, "June": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
             preprocessed_shopping["month_numeric"] = preprocessed_shopping["month"].map(month_mapping)
 
-    if preprocessed_shopping["month"].isnull().sum() > 0:
-        print("Warning: Missing values in 'month' column after mapping.")
-        print(preprocessed_shopping["month"].unique())
+    #6a. Rename traffic_types to channels
+    channel_mapping = {"1": "CH_1", "2": "CH_2", "3": "CH_3", "4": "CH_4", "5": "CH_5", "6": "CH_6", "8": "CH_8", "10": "CH_10", "11": "CH_11", "13": "CH_13", "20": "CH_20", "other": "CH_other"}
+    preprocessed_shopping["channels"] = preprocessed_shopping["traffic_type"].map(channel_mapping)
         
     #7. Log Transform of Predictors
     if log_xform:
