@@ -42,6 +42,9 @@ def cleaner(shoppingdata,
     else:
         raise ValueError("Cleaning was not applied. Please check the condition.")
     
+    #6. drop duplicates
+    cleaned_shopping = cleaned_shopping.drop_duplicates()
+    
     return cleaned_shopping
     
     
