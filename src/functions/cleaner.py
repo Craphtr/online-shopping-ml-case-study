@@ -34,7 +34,9 @@ def cleaner(shoppingdata,
         
     #4. Remove extreme values in ProductRelated Duration
     if remove_extreme:
+        print('size of shopping data', shopping.shape)
         shopping = shopping[(shopping["ProductRelated_Duration"] < 60) & (shopping["ProductRelated_Duration"] >= 720*60)]
+        print('size of shopping data after dropping extreme values', shopping.shape)
     
     #5. clean_column names    
     if apply_clean_names:
