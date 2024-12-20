@@ -19,7 +19,7 @@ cleaned_shopping = cleaner(shoppingdata,
                     remove_negative_NA=True, 
                     remove_missing=True, 
                     impute_missing=False,
-                    remove_extreme=False,)
+                    remove_extreme=True,)
 print('Number of null values after cleaning raw data is',cleaned_shopping.isnull().sum())    
 
 
