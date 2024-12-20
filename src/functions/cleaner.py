@@ -17,6 +17,7 @@ def cleaner(shoppingdata,
     
 #Create a copy of the original data so as not to modify it inplace
     shopping = shoppingdata.copy()
+    print('size of original shopping data', shopping.shape)
 
     #1. Change the name of the column revenue to Purchase
     shopping["Purchase"] = shopping["Revenue"]
@@ -34,8 +35,8 @@ def cleaner(shoppingdata,
         
     #4. Remove extreme values in ProductRelated Duration
     if remove_extreme:
-        print('size of shopping data', shopping.shape)
-        shopping = shopping[(shopping["ProductRelated_Duration"] < 60) & (shopping["ProductRelated_Duration"] >= 720*60)]
+        print('size of shopping data after dropping missing records', shopping.shape)
+        shopping = shopping[shopping["ProductRelated_Duration"] <= 720*60]
         print('size of shopping data after dropping extreme values', shopping.shape)
     
     #5. clean_column names    
@@ -46,7 +47,8 @@ def cleaner(shoppingdata,
     
     #6. drop duplicates
     cleaned_shopping = cleaned_shopping.drop_duplicates()
-    
+    print('size of cleaned shopping data after dropping duplicates', cleaned_shopping.shape)
+
     return cleaned_shopping
     
     
