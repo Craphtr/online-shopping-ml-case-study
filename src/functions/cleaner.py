@@ -46,7 +46,7 @@ def cleaner(shoppingdata,
         raise ValueError("Cleaning was not applied. Please check the condition.")
     
     #6. drop duplicates
-    cleaned_shopping = cleaned_shopping.drop_duplicates()
+    cleaned_shopping = cleaned_shopping.drop_duplicates(keep='first')
     print('size of cleaned shopping data after dropping duplicates', cleaned_shopping.shape)
 
     return cleaned_shopping
