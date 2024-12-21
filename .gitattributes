@@ -1,0 +1,5 @@
+# Treat Python files as main language
+*.py linguist-language=Python
+
+# Ignore Jupyter Notebooks in language stats
+*.ipynb linguist-detectable=false
