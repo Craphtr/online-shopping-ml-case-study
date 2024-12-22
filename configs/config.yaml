@@ -4,6 +4,7 @@ data:
     raw_data_path: "data/raw/online_shoppers_intention.csv"
     interim_data_path: "data/interim/"
     processed_data_path: "data/processed"
+    session_data_path: "data/session"
 
 paths:
     models: "artifacts/models/"
