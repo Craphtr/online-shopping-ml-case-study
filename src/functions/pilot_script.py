@@ -1,3 +1,4 @@
+import dill
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),'..','..','src')))
@@ -7,6 +8,7 @@ from functions.save_data import save_data
 from functions.cleaner import cleaner
 from functions.preprocessor import preprocessor
 from functions.feature_engineering import feature_engineering
+from functions.save_session import save_session
 
 
 #load in the original data
@@ -127,6 +129,9 @@ print('Number of null values after preprocessing test data with encoding is',sho
 save_data(shopping_test_preprocessed_encoded, 'encoded_test_data', 'shopping_test_preprocessed_encoded.pkl')
 
 #----
+#Save all variables in the current session
+print('Saving all global variables in this session')
+save_session('clean_prep_feat_engr_session.pkl')
 
 
 
